@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+    id 'idea'
+    id 'application'
+}
+
+group 'ua.andrey08'
+
+tasks.withType(JavaCompile) {
+    options.encoding('UTF-8')
+}
+
+
+mainClassName = 'ua.andrey08.Main'
+
+shadowJar {
+    archiveBaseName.set('Bot')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+
+}
+
+dependencies {
+    implementation 'org.telegram:telegrambots:5.3.0'
+    implementation 'org.telegram:telegrambots-abilities:5.3.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
