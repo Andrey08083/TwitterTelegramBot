@@ -1,5 +1,8 @@
 package ua.andrey08.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tweet {
     public String created_at;
     public long id;

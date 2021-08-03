@@ -1,17 +1,24 @@
 package ua.andrey08;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ua.andrey08.api.Requests;
+import ua.andrey08.bot.Bot;
+import ua.andrey08.data.BotConfig;
+import ua.andrey08.data.Reference;
 import ua.andrey08.entities.Tweet;
+import ua.andrey08.parser.LinkParser;
+
+import java.io.File;
 
 public class Main {
 
-    public static void main(String[] args) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    public static void main(String[] args) throws TelegramApiException {
+        BotConfig.initConfig(new File("config.json"));
 
-        Tweet media = mapper.readValue("{\"created_at\":\"Mon Aug 02 14:36:06 +0000 2021\",\"id\":1422204564745425000,\"id_str\":\"1422204564745424902\",\"text\":\"https://t.co/mAuRDZwFPq\",\"truncated\":false,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[],\"urls\":[],\"media\":[{\"id\":1422204551822782500,\"id_str\":\"1422204551822782472\",\"indices\":[0,23],\"media_url\":\"http://pbs.twimg.com/ext_tw_video_thumb/1422204551822782472/pu/img/lj4bPCxZQiq4SOjj.jpg\",\"media_url_https\":\"https://pbs.twimg.com/ext_tw_video_thumb/1422204551822782472/pu/img/lj4bPCxZQiq4SOjj.jpg\",\"url\":\"https://t.co/mAuRDZwFPq\",\"display_url\":\"pic.twitter.com/mAuRDZwFPq\",\"expanded_url\":\"https://twitter.com/TheFunny_mp4/status/1422204564745424902/video/1\",\"type\":\"photo\",\"sizes\":{\"medium\":{\"w\":640,\"h\":640,\"resize\":\"fit\"},\"thumb\":{\"w\":150,\"h\":150,\"resize\":\"crop\"},\"large\":{\"w\":640,\"h\":640,\"resize\":\"fit\"},\"small\":{\"w\":640,\"h\":640,\"resize\":\"fit\"}}}]},\"extended_entities\":{\"media\":[{\"id\":1422204551822782500,\"id_str\":\"1422204551822782472\",\"indices\":[0,23],\"media_url\":\"http://pbs.twimg.com/ext_tw_video_thumb/1422204551822782472/pu/img/lj4bPCxZQiq4SOjj.jpg\",\"media_url_https\":\"https://pbs.twimg.com/ext_tw_video_thumb/1422204551822782472/pu/img/lj4bPCxZQiq4SOjj.jpg\",\"url\":\"https://t.co/mAuRDZwFPq\",\"display_url\":\"pic.twitter.com/mAuRDZwFPq\",\"expanded_url\":\"https://twitter.com/TheFunny_mp4/status/1422204564745424902/video/1\",\"type\":\"video\",\"sizes\":{\"medium\":{\"w\":640,\"h\":640,\"resize\":\"fit\"},\"thumb\":{\"w\":150,\"h\":150,\"resize\":\"crop\"},\"large\":{\"w\":640,\"h\":640,\"resize\":\"fit\"},\"small\":{\"w\":640,\"h\":640,\"resize\":\"fit\"}},\"video_info\":{\"aspect_ratio\":[1,1],\"duration_millis\":3016,\"variants\":[{\"bitrate\":432000,\"content_type\":\"video/mp4\",\"url\":\"https://video.twimg.com/ext_tw_video/1422204551822782472/pu/vid/320x320/kKhJZZit1Mh11fbQ.mp4?tag=12\"},{\"bitrate\":1280000,\"content_type\":\"video/mp4\",\"url\":\"https://video.twimg.com/ext_tw_video/1422204551822782472/pu/vid/640x640/ezOjf551ZQxkrb5w.mp4?tag=12\"},{\"content_type\":\"application/x-mpegURL\",\"url\":\"https://video.twimg.com/ext_tw_video/1422204551822782472/pu/pl/iBfBhc1MCNKxjrZS.m3u8?tag=12&container=fmp4\"},{\"bitrate\":832000,\"content_type\":\"video/mp4\",\"url\":\"https://video.twimg.com/ext_tw_video/1422204551822782472/pu/vid/540x540/jhvVjDNFRSZB9XvF.mp4?tag=12\"}]},\"additional_media_info\":{\"monetizable\":false}}]},\"source\":\"<a href=\\\"http://twitter.com/download/iphone\\\" rel=\\\"nofollow\\\">Twitter for iPhone</a>\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":1302230772020056000,\"id_str\":\"1302230772020056064\",\"name\":\"The Funny\",\"screen_name\":\"TheFunny_mp4\",\"location\":\"\",\"description\":\"Gen z Humor “laugh” (Neither then grandayy memes or snl) and other moments\",\"url\":null,\"entities\":{\"description\":{\"urls\":[]}},\"protected\":false,\"followers_count\":375394,\"friends_count\":21,\"listed_count\":606,\"created_at\":\"Sat Sep 05 13:03:18 +0000 2020\",\"favourites_count\":4548,\"utc_offset\":null,\"time_zone\":null,\"geo_enabled\":false,\"verified\":false,\"statuses_count\":1895,\"lang\":null,\"contributors_enabled\":false,\"is_translator\":false,\"is_translation_enabled\":false,\"profile_background_color\":\"F5F8FA\",\"profile_background_image_url\":null,\"profile_background_image_url_https\":null,\"profile_background_tile\":false,\"profile_image_url\":\"http://pbs.twimg.com/profile_images/1345039735794917378/NAEUY8FU_normal.jpg\",\"profile_image_url_https\":\"https://pbs.twimg.com/profile_images/1345039735794917378/NAEUY8FU_normal.jpg\",\"profile_banner_url\":\"https://pbs.twimg.com/profile_banners/1302230772020056064/1604849983\",\"profile_link_color\":\"1DA1F2\",\"profile_sidebar_border_color\":\"C0DEED\",\"profile_sidebar_fill_color\":\"DDEEF6\",\"profile_text_color\":\"333333\",\"profile_use_background_image\":true,\"has_extended_profile\":true,\"default_profile\":true,\"default_profile_image\":false,\"following\":null,\"follow_request_sent\":null,\"notifications\":null,\"translator_type\":\"none\",\"withheld_in_countries\":[]},\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"retweet_count\":1381,\"favorite_count\":7966,\"favorited\":false,\"retweeted\":false,\"possibly_sensitive\":false,\"possibly_sensitive_appealable\":false,\"lang\":\"und\"}", Tweet.class);
-
-        System.out.println(media.toString());
+        TelegramBotsApi botApi = new TelegramBotsApi(DefaultBotSession.class);
+        botApi.registerBot(new Bot(Reference.botConfig.botToken, Reference.botConfig.botUsername));
 
     }
 }

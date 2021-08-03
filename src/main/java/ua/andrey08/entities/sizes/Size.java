@@ -1,7 +1,5 @@
 package ua.andrey08.entities.sizes;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Size {
 
     public int w;
