@@ -10,11 +10,9 @@ import ua.andrey08.entities.Tweet;
 import ua.andrey08.entities.Variant;
 import ua.andrey08.parser.LinkParser;
 
-import java.util.Arrays;
-
 public class MessageResponse {
 
-    public static void responseToUpdate(Update update) {
+    public static void responseToUpdate(Update update, long start) {
         Tweet tweet = Requests.makeRequest(LinkParser.getIdFromLink(update.getMessage().getText()));
         SendMessage message;
         if (tweet != null) {
@@ -35,6 +33,8 @@ public class MessageResponse {
                     .build();
             try {
                 Reference.bot.execute(message);
+                long end = System.currentTimeMillis();
+                Reference.logger.info(String.format("Update processed in %s ms", end - start));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }

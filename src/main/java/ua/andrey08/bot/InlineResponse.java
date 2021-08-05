@@ -17,7 +17,7 @@ import java.util.List;
 
 public class InlineResponse {
 
-    public static void responseToUpdate(Update update) {
+    public static void responseToUpdate(Update update, long start) {
         Tweet tweet = Requests.makeRequest(LinkParser.getIdFromLink(update.getInlineQuery().getQuery()));
         if (tweet != null) {
             AnswerInlineQuery answerInlineQuery;
@@ -45,6 +45,8 @@ public class InlineResponse {
 
             try {
                 Reference.bot.execute(answerInlineQuery);
+                long end = System.currentTimeMillis();
+                Reference.logger.info(String.format("Update processed in %s ms", end - start));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
